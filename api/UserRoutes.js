@@ -26,6 +26,20 @@ router.post(`/register`,async(req,res) =>{
     
 })
 
+router.get(`/search/:name`,(req,res)=>{
+    User.find({
+        name:{'$regex' : req.param.name, '$options' : 'i'}
+    }).then(user=>{
+        if(user){
+            res.status(200).send(user)
+        }else{
+            res.status(404).json({error: "User Not Found"})
+        }
+    }).catch(err=>{
+        res.status(500).json({error:err.message})
+    })
+})
+
 router.post(`/login`,(req,res)=>{
     User.findOne({email:req.body.email, password:req.body.password}).then(user =>{
         if(user){
