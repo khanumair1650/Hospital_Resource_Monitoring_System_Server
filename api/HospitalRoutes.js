@@ -26,6 +26,20 @@ router.post(`/create`,async(req,res) =>{
     }
     
 })
+
+router.get('/fetch/:pin',async(req,res)=>{
+    Hospital.findOne({pin:req.params.pin}).then(hospital=>{
+        if(hospital){
+            res.status(200).json(hospital)
+        }else{
+            res.status(401).json({error: "Hospital Not Found"})
+        }
+    }).catch(err =>{
+        res.status(500).json({error:err.message})
+    })
+})
+
+
 router.put('/update/:pin',async(req,res)=>{
     let h_data = await Hospital.updateOne({pin:req.body.pin},{
         "$set": {
@@ -35,6 +49,7 @@ router.put('/update/:pin',async(req,res)=>{
             "beds" : req.body.beds,
             "oxygen" : req.body.oxygen,
             "bloods" : req.body.bloods,
+            "vaccine" : req.body.vaccine,
             "contactno" : req.body.contactno,
             "link" : req.body.link,
             "pin" : req.body.pin
@@ -43,9 +58,21 @@ router.put('/update/:pin',async(req,res)=>{
     res.send(h_data);
 })
 
-router.delete('/:pin',async(req,res)=>{
+router.delete('/delete/:pin',async(req,res)=>{
     data = await Hospital.deleteOne({pin:req.params.pin})
     res.send(data)
+})
+
+router.get('/search/:name',async(req,res)=>{
+    let n_data = await Hospital.findOne({name:{'$regex' : req.params.name, '$options' : 'i'}}).then(hospital=>{
+        if(hospital){
+            res.status(200).json(hospital)
+        }else{
+            res.status(401).json({error: "Hospital Not Found"})
+        }
+    }).catch(err =>{
+        res.status(500).json({error:err.message})
+    })
 })
 
 const hospitalExists =async(pin)=>{

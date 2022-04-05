@@ -26,6 +26,11 @@ const HospitalSchema = new mongoose.Schema({
         type: String,
         required:[true,"Please Enter Available of Bloods"]
     },
+    vaccine:{
+        type: String,
+        required:[true,"Please Enter Vaccine information"]
+
+    },
     contactno:{
         type: Number,
         required:[true,"Please Enter a Contact No of Hospital"]
