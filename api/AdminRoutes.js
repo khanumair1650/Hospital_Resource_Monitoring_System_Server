@@ -15,7 +15,7 @@ router.get(`/`, (req,res)=>{
 
 router.post(`/registerr`,async(req,res) =>{
     if(await adminExists(req.body.email)){
-        res.status(409).json({error:"Email already Exists"})
+        res.status(409).json({error:"Admin  already Exists"})
     }else{
         const newAdmin = new Admin(req.body)
     newAdmin.save().then(admin =>{
